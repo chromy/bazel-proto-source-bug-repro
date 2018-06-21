@@ -1,7 +1,4 @@
-# Bazel proto\_source\_root bug repro
-
-There are two issues which seem like they could be realated to
-`proto_source_root`.
+# Bazel proto\_source\_root
 
 ## Issue 1: strict deps
 
@@ -28,7 +25,7 @@ INFO: Found 1 target...
 SUBCOMMAND: # //protos:a_and_b_proto [action 'Generating Descriptor Set proto_library //protos:a_and_b_proto']
 (cd /........................./.cache/bazel/_bazel_hjd/d5202dfa29ea627a4a1c6fbe17e0bc9f/execroot/__main__ && \
   exec env - \
-    PATH=/........................./google-cloud-sdk/bin:/........................./proj/depot_tools:/........................./.cabal/bin:/........................./flutter/bin:/........................./bin:/usr/lib/google-golang/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+    PATH=/........................./google-cloud-sdk/bin:/........................./proj/depot_tools:/........................./.cabal/bin:/........................./flutter/bin:/........................./bin:/usr/lib/.../bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
   bazel-out/host/bin/external/com_google_protobuf/protoc '--proto_path=protos' '--descriptor_set_out=bazel-out/k8-fastbuild/genfiles/protos/a_and_b_proto-descriptor-set.proto.bin' '-Iprotos/example/a.proto=protos/example/a.proto' '-Iprotos/example/b.proto=protos/example/b.proto' --direct_dependencies protos/example/a.proto:protos/example/b.proto '--direct_dependencies_violation_msg=%s is imported, but //protos:a_and_b_proto doesn'\''t directly depend on a proto_library that '\''srcs'\'' it.' protos/example/a.proto protos/example/b.proto)
 ERROR: /........................./proj/bazel-example/protos/BUILD:1:1: Generating Descriptor Set proto_library //protos:a_and_b_proto failed (Exit 1)
 example/a.proto: example/b.proto is imported, but //protos:a_and_b_proto doesn't directly depend on a proto_library that 'srcs' it.
@@ -74,7 +71,7 @@ INFO: Found 1 target...
 SUBCOMMAND: # //protos:a_and_b_proto [action 'Generating C++ proto_library //protos:a_and_b_proto']
 (cd /........................./.cache/bazel/_bazel_hjd/d5202dfa29ea627a4a1c6fbe17e0bc9f/execroot/__main__ && \
   exec env - \
-    PATH=/........................./google-cloud-sdk/bin:/........................./proj/depot_tools:/........................./.cabal/bin:/........................./flutter/bin:/........................./bin:/usr/lib/google-golang/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+    PATH=/........................./google-cloud-sdk/bin:/........................./proj/depot_tools:/........................./.cabal/bin:/........................./flutter/bin:/........................./bin:/usr/lib/.../bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
   bazel-out/host/bin/external/com_google_protobuf/protoc '--proto_path=protos' '--cpp_out=bazel-out/k8-fastbuild/genfiles' '-Iprotos/example/a.proto=protos/example/a.proto' '-Iprotos/example/b.proto=protos/example/b.proto' protos/example/a.proto protos/example/b.proto)
 ERROR: /../proj/bazel-example/protos/BUILD:1:1: output 'protos/example/a.pb.h' was not created
 ERROR: /../proj/bazel-example/protos/BUILD:1:1: output 'protos/example/b.pb.h' was not created
@@ -88,6 +85,6 @@ INFO: 1 process, linux-sandbox.
 FAILED: Build did NOT complete successfully
 ```
 
-It is not immediately clear from the output but that `protoc` command generates files
+The `protoc` command generates files
 to: `bazel-out/k8-fastbuild/genfiles/example` rather than 
 `bazel-out/k8-fastbuild/genfiles/protos/example` which `bazel` seems to expect.
