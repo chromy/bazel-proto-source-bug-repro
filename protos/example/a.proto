@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+package example;
+
+import "example/b.proto";
+
+message A {
+  optional string foo = 1;
+  optional B bar = 2;
+}
+
+
